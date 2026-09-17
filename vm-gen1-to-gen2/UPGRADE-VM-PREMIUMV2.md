@@ -1,6 +1,6 @@
 # Upgrade an Azure VM and Migrate Data Disks to Premium SSD v2
 
-Use [`scripts/upgrade-vm-v7-premiumv2.ps1`](scripts/upgrade-vm-v7-premiumv2.ps1) to resize an existing Azure VM, optionally upgrade a Windows Generation 1 VM to Generation 2 Trusted Launch, convert its disk controller from SCSI to NVMe, and replace its managed data disks with Premium SSD v2 disks. The OS disk storage SKU is preserved.
+Use [`upgrade-vm-v7-premiumv2.ps1`](upgrade-vm-v7-premiumv2.ps1) to resize an existing Azure VM, optionally upgrade a Windows Generation 1 VM to Generation 2 Trusted Launch, convert its disk controller from SCSI to NVMe, and replace its managed data disks with Premium SSD v2 disks. The OS disk storage SKU is preserved.
 
 Normally, the VM resource is updated in place. With `-MigrateAvailabilitySetToZone`, the VM resource is deleted and recreated with the same name and NICs. Each data disk is migrated by creating a snapshot and a new disk, then replacing the original attachment at the same LUN. The script does not delete the original disks or snapshots.
 
@@ -69,10 +69,10 @@ The Availability Set migration does not preserve everything attached to the VM r
 
 ## Run the Upgrade
 
-Open PowerShell from the repository root. The following example upgrades a Windows VM to a v6 SKU, prepares the guest for NVMe, migrates non-Premium-v2 data disks, and leaves the VM stopped for validation:
+Open PowerShell from this utility's folder. The following example upgrades a Windows VM to a v6 SKU, prepares the guest for NVMe, migrates non-Premium-v2 data disks, and leaves the VM stopped for validation:
 
 ```powershell
-./scripts/upgrade-vm-v7-premiumv2.ps1 `
+./upgrade-vm-v7-premiumv2.ps1 `
     -SubscriptionId $subscriptionId `
     -ResourceGroupName $resourceGroupName `
     -VmName $vmName `
@@ -89,7 +89,7 @@ Open PowerShell from the repository root. The following example upgrades a Windo
 For a supported Windows Gen1 VM, add `-UpgradeGen1ToTrustedLaunch`. The script creates an OS-disk recovery snapshot, runs `MBR2GPT` validation and conversion through Azure Run Command, enables Trusted Launch with Secure Boot and vTPM, starts the VM, and verifies that its OS disk reports Generation 2 before continuing:
 
 ```powershell
-./scripts/upgrade-vm-v7-premiumv2.ps1 `
+./upgrade-vm-v7-premiumv2.ps1 `
     -SubscriptionId $subscriptionId `
     -ResourceGroupName $resourceGroupName `
     -VmName $vmName `
@@ -103,7 +103,7 @@ For a supported Windows Gen1 VM, add `-UpgradeGen1ToTrustedLaunch`. The script c
 For a VM in an Availability Set, explicitly select the destination availability zone. This is a destructive VM-resource recreation with best-effort rollback, so use an approved maintenance window:
 
 ```powershell
-./scripts/upgrade-vm-v7-premiumv2.ps1 `
+./upgrade-vm-v7-premiumv2.ps1 `
     -SubscriptionId $subscriptionId `
     -ResourceGroupName $resourceGroupName `
     -VmName $vmName `
@@ -121,7 +121,7 @@ Before deleting the source VM resource, the script creates the replacement data 
 For a target SKU that remains on SCSI, specify the controller explicitly and omit the NVMe switches:
 
 ```powershell
-./scripts/upgrade-vm-v7-premiumv2.ps1 `
+./upgrade-vm-v7-premiumv2.ps1 `
     -SubscriptionId $subscriptionId `
     -ResourceGroupName $resourceGroupName `
     -VmName $vmName `
