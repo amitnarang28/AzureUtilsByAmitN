@@ -4,4 +4,3 @@ vm-sku-upgrade/Requirements.txt
 MonthlyMetricSnapshot/output/
 MonthlyMetricSnapshot/*.local.kql
 MonthlyMetricSnapshot/PLAN.md
-MonthlyMetricSnapshot/tests/Test-MonthlyMetricSnapshot.ps1
