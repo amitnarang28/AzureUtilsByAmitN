@@ -22,6 +22,12 @@ This PowerShell utility resizes an existing Azure VM and migrates its managed da
 
 Review the prerequisites, downtime considerations, recovery guidance, and usage examples in the [full utility documentation](vm-gen1-to-gen2/UPGRADE-VM-PREMIUMV2.md) before running the script.
 
+### [Export Azure Monitor Snapshots to CSV](MonthlyMetricSnapshot/MonthlyMetricSnapShot.md)
+
+This read-only PowerShell utility exports user-supplied KQL query results from a Log Analytics workspace or platform metric aggregates from Azure Monitor Metrics. It accepts an explicit time window and output path, uses an existing Azure sign-in, and contains no tenant-specific configuration or credentials.
+
+The guide includes generic query-file usage, previous-calendar-month exports, Cosmos DB diagnostic-log examples, and a separate Metrics mode for comparison with service-blade charts. Review the [setup, data-source differences, limitations, and testing steps](MonthlyMetricSnapshot/MonthlyMetricSnapShot.md) before running it.
+
 ## Disclaimer
 
 Test each utility in a non-production environment and review it for your requirements before using it with customer workloads.
